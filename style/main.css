@@ -1,0 +1,54 @@
+.fuckBoostrapNavRadius {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.fuckBoostrapNavBottom {
+    margin-top: -60px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    right: 0;
+    z-index: -1;
+}
+
+.fuckBoostrapPullRight {
+    float: none;
+}
+
+.banner1Bg {
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/contact-des-bg.jpg);
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.banner2Bg {
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/home-bg-placeholder.jpg);
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.banner3Bg {
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/layer-bg.jpg);
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.indexBookInfo {
+    color: #333;
+    position: absolute;
+    width: 250px;
+    height: 200px;
+    left: 20px;
+    top: 60%;
+    text-align: left;
+    padding-left: 40px;
+    background-color: rgba(255, 255, 255, 0.6);
+}

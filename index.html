@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='appModule'>
+
+<head>
+    <meta charset="UTF-8">
+    <title>基于Angualr的二手书书城</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="style/main.css">
+</head>
+
+<body>
+    <div class="navbar navbar-inverse fuckBoostrapNavRadius">
+        <div class="container-fluid">
+            <div class="navbar-header"><a href="#!/home" class="navbar-brand">二手书书城</a></div>
+            <ul class="navbar-nav nav">
+                <li><a href="#!/list">图书列表</a></li>
+                <li><a href="#!/add">添加图书</a></li>
+            </ul>
+            <ul class="navbar-nav nav pull-right">
+                <li><a href="#!/login">登录</a></li>
+                <li><a href="#!/reg">注册</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="" ng-view></div>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-resource/angular-resource.js"></script>
+    <script src="node_modules/angular-route/angular-route.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script>
+    var app = angular.module('appModule', ['ngResource', 'ngRoute']);
+
+    function setStorage(key, obj) {
+        localStorage.setItem(key, JSON.stringify(obj));
+    }
+
+    function getStorage(key) {
+        return JSON.parse(localStorage.getItem(key));
+    }
+
+    function deleteStorage(key) {
+        localStorage.removeItem(key);
+    }
+    app.factory('Books', function($resource) {
+        return $resource('/book/:bid', null, {
+            update: {
+                method: 'put'
+            }
+        });
+    });
+    app.factory('User', function($resource) {
+        return $resource('/user', null, {});
+    });
+    app.config(function($routeProvider) {
+        $routeProvider
+            .when('/home', {
+                templateUrl: 'tmpl/home.html',
+                controller: 'homeCtrl'
+            })
+            .when('/list', {
+                templateUrl: 'tmpl/list.html',
+                controller: 'listCtrl'
+            })
+            .when('/add', {
+                templateUrl: 'tmpl/add.html',
+                controller: 'addCtrl'
+            })
+            .when('/detail/:bid', {
+                templateUrl: 'tmpl/detail.html',
+                controller: 'detailCtrl'
+            })
+            .when('/reg', {
+                templateUrl: 'tmpl/reg.html',
+                controller: 'regCtrl'
+            })
+            .when('/login', {
+                templateUrl: 'tmpl/login.html',
+                controller: 'loginCtrl'
+            })
+            .otherwise('/home');
+    })
+    app.controller('homeCtrl', function($scope, $sce) {
+        $scope.home = $sce.trustAsHtml('<h1 class="text-center">欢迎来到[二手书书城]</h1>');
+        $('.carousel').carousel();
+
+    });
+    app.controller('listCtrl', function($scope, Books) {
+        $scope.book = Books.query();
+    });
+    app.controller('addCtrl', function($scope, $location, Books, $location) {
+        $scope.add = function() {
+            Books.save($scope.book).$promise.then(function() {
+                $location.path('/list');
+            });
+        }
+    });
+    app.controller('detailCtrl', function($scope, Books, $routeParams, $location) {
+        var id = $routeParams.bid;
+        $scope.flag = true;
+        Books.get({
+            bid: id
+        }).$promise.then(function(data) {
+            $scope.b = data;
+            $scope.book = JSON.parse(JSON.stringify(data));
+        });
+        $scope.change = function() {
+            $scope.flag = !$scope.flag;
+        }
+        $scope.remove = function() {
+            Books.delete({
+                bid: id
+            }).$promise.then(function() {
+                $location.path('/list');
+            })
+        }
+        $scope.comfirm = function() {
+            Books.update({
+                bid: id
+            }, $scope.book).$promise.then(function(data) {
+                $scope.flag = !$scope.flag;
+            })
+        }
+        $scope.cancle = function() {
+            $scope.book = $scope.b;
+            $scope.flag = !$scope.flag;
+        }
+    });
+    app.controller('regCtrl', function($scope, User, $location, $http) {
+        // $scope.register = function() {
+        //     User.save($scope.user).$promise.then(function(data) {
+        //         console.log(data);
+        //         setStorage("localKey", {
+        //             name: data.name,
+        //             id: data.id
+        //         });
+        //         $location.path('/login');
+        //     });
+        // };
+        $scope.register = function() {
+            var oFd = document.getElementById('regForm');
+            var fd = new FormData(oFd);
+            $http({
+                    url: '/reg',
+                    method: 'POST',
+                    data: fd,
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    transformRequest: angular.identity
+                })
+                .success(function(response) {
+                    //上传成功的操作
+                    alert("uplaod success");
+                });
+
+        })
+    }
+    });
+    app.controller('loginCtrl', function($scope, User) {
+        $scope.user = getStorage("localKey");
+        $scope.login = function() {
+            User.post($scope.user).$promise.then(function(data) {
+                if (data == 'error') {
+                    alert('cuowu');
+                } else {
+                    $location.path('/add');
+                }
+            })
+        }
+    });
+    </script>
+</body>
+
+</html>

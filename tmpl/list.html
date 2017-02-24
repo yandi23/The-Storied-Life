@@ -1,0 +1,9 @@
+<div class="container">
+    <div class="col-md-3 " ng-repeat="b in book">
+        <div class="panel panel-success">
+            <div class="panel-heading text-center">{{b.bookName}}</div>
+            <div class="panel-body text-center"><img style='width: 180px;height: 240px' src="" alt="" ng-src="{{b.bookCover}}"></div>
+            <div class="panel-footer">价格:{{b.bookPrice}}<a href="#!/detail/{{b.id}}" class="pull-right">查看更多</a></div>
+        </div>
+    </div>
+</div>

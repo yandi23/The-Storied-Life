@@ -1,0 +1,39 @@
+<div class="container">
+    <form action="" class="form-horizontal col-md-10">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <span ng-show='flag'>{{book.bookName}}</span>
+                    <div class="form-group" ng-hide='flag'>
+                        <label class="col-sm-2 col-sm-2 control-label" for="">书名：</label>
+                        <div class="col-sm-10">
+                            <input class='form-control' type="text" ng-model='book.bookName'>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <img ng-show='flag' src="" alt="" ng-src="{{book.bookCover}}">
+                    <div class="form-group" ng-hide='flag'>
+                        <label class="col-sm-2 col-sm-2 control-label" for="">封面图地址</label>
+                        <div class="col-sm-10">
+                            <input class='form-control' type="text" ng-model='book.bookCover'>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <span ng-show='flag'>价格:{{book.bookPrice}}</span>
+                    <div class="form-group" ng-hide='flag'>
+                        <label class="col-sm-2 col-sm-2 control-label" for="">价格:</label>
+                        <div class="col-sm-10">
+                            <input class='form-control' type="text" ng-model='book.bookPrice'>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary center" ng-show='flag' ng-click='change()'>修改</button>
+                    <button class="btn btn-danger center" ng-show='flag' ng-click='remove()'>删除</button>
+                    <button class="btn btn-primary center" ng-hide='flag' ng-click='comfirm()'>确定</button>
+                    <button class="btn btn-warning center" ng-hide='flag' ng-click='cancle()'>取消</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
